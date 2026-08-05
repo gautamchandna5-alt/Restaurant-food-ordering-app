@@ -29,7 +29,7 @@ header h2{
     margin-top: 10px;
 }
 .item-graphic{
-    font-size: 3.5rem;
+    font-size: 9rem;
   font-weight: bold;
   float: left;
   line-height: 1;
@@ -37,6 +37,7 @@ header h2{
 
 }
 .menu-item{
+    position: relative;
     display: flex;
     align-items: center;
     border-bottom: 1px solid #e5e5e5;
@@ -46,14 +47,12 @@ header h2{
 }
 .menu-items{
 
+
 }
 .menu{
     padding: 20px 60px;
 }
-.item-graphic{
-    font-size: 9rem;
 
-}
 .item-name{
     font-size: 45px;
     font-weight: bold;
@@ -76,4 +75,15 @@ header h2{
     flex-direction: column;
     justify-content: space-between;
     margin-left: 20px;
+}
+.add-btn{
+    background-color: #fff;
+    color: #3c3c3c;
+    border: 1px solid #dedede;
+    padding: 10px 15px;
+    font-size: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    left: 90%;
 }
