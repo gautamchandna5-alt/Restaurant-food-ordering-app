@@ -13,10 +13,16 @@ document.addEventListener('click', (e) => {
 function addItemToOrder(itemId){
     const orderedItem = menuArray.filter((foodOption)=> {return foodOption.id === Number(itemId)})[0]
     selectedItems.push(orderedItem);
-    console.log(selectedItems)
+    renderOrder();
 }
 
+function renderOrder(){
 
+    displayOverallOrder();
+    displayOrderItems();
+    displayTotalPrice();
+    
+}
 
 
 const renderMenu = menuArray.map((item) => {
@@ -38,7 +44,8 @@ const renderMenu = menuArray.map((item) => {
 })
 menu.innerHTML = renderMenu.join('');
 
-order.innerHTML =`
+function displayOverallOrder(){
+    order.innerHTML =`
             <h2>Your order</h2>
             <div id="order-items" class="order-items">
                 <div class="order-item" id="order-item">
@@ -62,6 +69,9 @@ order.innerHTML =`
             <button id="complete-order-btn" class="btn">Complete order</button >
 
 `
+}
+
+
 
 const completeOrderBtn = document.getElementById('complete-order-btn');
 
