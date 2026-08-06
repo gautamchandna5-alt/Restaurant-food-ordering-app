@@ -39,42 +39,55 @@ const order = document.getElementById('order');
 
 function render() {
     order.innerHTML = ''
-    order.innerHTML =`<h2>Your order</h2>
-    <div id="order-items" class="order-items">
-    
-    </div>
-    <div class="total-price">
-    <h3>Total price:</h3>
-    <h3 id="total-price-value">$0</h3>
-    </div>
-    <button id="complete-order-btn" class="btn">Complete order</button >
-    
-    `
-    
-    const orderItems = document.getElementById('order-items')
-    
-    
-    const renderOrderItems = selectedItems.map((item)=>{
-        return `<div class="order-item" id="order-item">
-        <div class="order-item-name" id="order-item-name">
-        <p>
-        ${item.name}
-        </p>
-        <button class="remove-btn" id="remove-btn">Remove</button>
+    if(selectedItems.length >=1){
+
+        order.innerHTML =`<h2>Your order</h2>
+        <div id="order-items" class="order-items">
+        
         </div>
-        <div id="order-item-price" class="order-item-price">
-                        <p>
-                            $${item.price}
-                        </p>
-         </div>
-    </div>
+        <div class="total-price">
+        <h3>Total price:</h3>
+        <h3 id="total-price-value">$0</h3>
+        </div>
+        <button id="complete-order-btn" class="btn">Complete order</button >
+        
         `
-    })
-    
-    orderItems.innerHTML += renderOrderItems.join('')
+        
+        const orderItems = document.getElementById('order-items')
+        
+        
+        const renderOrderItems = selectedItems.map((item, index)=>{
+            return `<div class="order-item" id="order-item">
+            <div class="order-item-name" id="order-item-name">
+            <p>
+            ${item.name}
+            </p>
+            <button class="remove-btn" id="remove-btn" data-remove=${index}>Remove</button>
+            </div>
+            <div id="order-item-price" class="order-item-price">
+                            <p>
+                                $${item.price}
+                            </p>
+             </div>
+        </div>
+            `
+        })
+        
+        orderItems.innerHTML += renderOrderItems.join('')
+    }
 
     
 }
+
+function orderCompleted(){
+    order.innerHTML = `
+    <div class="order-completed">
+                <p>Thank's, your order is on the way</p>
+            </div>
+            
+    `
+}
+
 function renderTotalOrderPrice (){
     let totalPrice = 0
     selectedItems.forEach((item) => {
@@ -85,24 +98,36 @@ function renderTotalOrderPrice (){
 }
 
 const payment = document.getElementById('payment')
-function completePayment  () {
+function completePayment() {
    payment.innerHTML = `
             <h1>enter card details</h1>
-            <form>
+            <form id="payment-form">
             <input type="text" placeholder="Enter your name" id="card-name" class="input-field" required>
             <input type="number" placeholder="Enter card number" id="card-number" class="input-field" required>
             <input type="number" placeholder="Enter CVV" id="card-cvv" class="input-field" required>
             <button id="pay-btn" class="btn">Pay</button>
             </form>
 `
-    
-const payBtn = document.getElementById('pay-btn');
-payBtn.addEventListener('click', () => {
-    payment.classList.toggle('hidden')})
 
+   const paymentForm = document.getElementById('payment-form');
+   const payBtn = document.getElementById('pay-btn');
 
+   payBtn.addEventListener('click', (event) => {
+       event.preventDefault();
+
+       if (paymentForm.checkValidity()) {
+           payment.classList.toggle('hidden');
+           orderCompleted();
+       } else {
+           paymentForm.reportValidity();
+       }
+   });
 }
 
+function removeItem (itemIndex){
+    selectedItems.splice(Number(itemIndex), 1)
+    render()
+}
 
 
 document.addEventListener('click', (e) => {
@@ -114,7 +139,8 @@ document.addEventListener('click', (e) => {
         payment.classList.toggle('hidden')
     }
 
-    if(e.target.id === 'remove-btn'){
+    if(e.target.dataset.remove){
+        removeItem(e.target.dataset.remove)
 
     }
 
